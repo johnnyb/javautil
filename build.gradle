@@ -1,0 +1,28 @@
+plugins {
+	id 'java'
+	id 'java-library'
+	id 'maven-publish'
+}
+
+version = '0.0.1'
+group = ''
+
+
+task doc(type: Javadoc) {
+  source = sourceSets.main.allJava
+}
+
+publishing {
+	publications {
+		library(MavenPublication) {
+			from components.java
+		}
+	}
+
+	repositories {
+		maven {
+			name = "myrepo"
+			url = layout.buildDirectory.dir("repo")
+		}
+	}
+}
