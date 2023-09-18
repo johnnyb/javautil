@@ -2,6 +2,8 @@ package net.bplearning.util.crypto;
 
 import java.util.zip.Checksum;
 
+import net.bplearning.util.binary.ByteUtil;
+
 // Does not support 64-bit CRCs.  Largely based on the JavaScript implementation found on this page:
 //
 // http://www.sunshine2k.de/coding/javascript/crc/crc_js.html
@@ -84,22 +86,12 @@ public class GenericCrc {
             current = initial;
         }
 
-        long reflectBits(long value, int bits) {
-            long rval = 0;
-            for(int i = 0; i < bits; i++) {
-                if((value & (1 << i)) != 0) {
-                    rval |= (1 << (bits - i - 1));
-                }
-            }
-            return rval;
-        }
-
         @Override
         public void update(int ival) {
             long val = ival & 0xff;
 
             if(reflectInput) {
-                val = reflectBits(val, 8);
+                val = ByteUtil.reverseInitialBits(val, 8);
             }
 
             long temp = (current ^ (val << (width - 8))) & mask;
@@ -122,7 +114,7 @@ public class GenericCrc {
         public long getValue() {
             long value = current;
             if(reflectResult) {
-                value = reflectBits(value, width);
+                value = ByteUtil.reverseInitialBits(value, width);
             }
 
             return (value ^ finalXor) & mask;
