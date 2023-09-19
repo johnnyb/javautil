@@ -91,7 +91,7 @@ public class GenericCrc {
             long val = ival & 0xff;
 
             if(reflectInput) {
-                val = ByteUtil.reverseInitialBits(val, 8);
+                val = ByteUtil.reverseLowOrderBits(val, 8);
             }
 
             long temp = (current ^ (val << (width - 8))) & mask;
@@ -114,7 +114,7 @@ public class GenericCrc {
         public long getValue() {
             long value = current;
             if(reflectResult) {
-                value = ByteUtil.reverseInitialBits(value, width);
+                value = ByteUtil.reverseLowOrderBits(value, width);
             }
 
             return (value ^ finalXor) & mask;

@@ -88,7 +88,7 @@ public class ByteUtil {
 	 * @param numBits
 	 * @return
 	 */
-	public static long reverseInitialBits(long value, int numBits) {
+	public static long reverseLowOrderBits(long value, int numBits) {
 		long rval = 0;
 		for(int i = 0; i < numBits; i++) {
 			if((value & (1 << i)) != 0) {
